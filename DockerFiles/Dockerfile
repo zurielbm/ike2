@@ -56,10 +56,10 @@ RUN \
     addgroup --gid "$PGID" "$USER" && \
     adduser --gecos '' --no-create-home --disabled-password --uid "$PUID" --gid "$PGID" "$USER" && \
     cd /var/www/html && \
-    LATEST_VERSION=$(curl -sX GEThttps://api.github.com/repos/zurielbm/zinvoiceshelf/releases/latest | awk '/tag_name/{print $4;exit}' FS='[""]') && \
+    LATEST_VERSION=$(curl -sX GEThttps://api.github.com/repos/zurielbm/ike/releases/latest | awk '/tag_name/{print $4;exit}' FS='[""]') && \
     if [ "$TARGET" = "release" ] ; then RELEASE_TAG="-b $LATEST_VERSION" ; \
     elif [ "$BRANCH" != "master" ] ; then RELEASE_TAG="-b $BRANCH" ; fi && \
-    git clone --depth 1 $RELEASE_TAG https://github.com/zurielbm/zinvoiceshelf.git && \
+    git clone --depth 1 $RELEASE_TAG https://github.com/zurielbm/ike.git && \
     mv ike/.git/refs/heads/$BRANCH ike/$BRANCH || cp ike/.git/HEAD ike/$BRANCH && \
     mv ike/.git/HEAD ike/HEAD && \
     rm -r ike/.git/* && \
