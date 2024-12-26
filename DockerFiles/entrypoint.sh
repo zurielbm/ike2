@@ -12,11 +12,11 @@ version=$(head -n 1 /var/www/html/ike/version.md)
 
 echo "
 -------------------------------------
-ZInvoiceShelf Branch:   $branch ($target)
-ZInvoiceShelf Commit:   $shorthash
-ZInvoiceShelf Version:  $version
+ike Branch:   $branch ($target)
+ike Commit:   $shorthash
+ike Version:  $version
 -------------------------------------
-Link to commit: https://github.com/zurielbm/ZInvoiceShelf/commit/$longhash
+Link to commit: https://github.com/zurielbm/ike/commit/$longhash
 -------------------------------------"
 
 if [ -n "$STARTUP_DELAY" ]
