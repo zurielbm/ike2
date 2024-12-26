@@ -1,0 +1,63 @@
+services:
+  db:
+    image: 'postgres:17'
+    container_name: InviceShelf-DB
+    hostname: invoiceshelf-db
+    ports:
+      - '9054:80'
+    security_opt:
+      - 'no-new-privileges:true'
+    healthcheck:
+      test:
+        - CMD
+        - pg_isready
+        - '-q'
+        - '-d'
+        - invoiceshelf
+        - '-U'
+        - invoiceshelfuser
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    volumes:
+      - '/volume2/docker/ike/db:/var/lib/postgresql/data:rw'
+    environment:
+      POSTGRES_DB: invoiceshelf
+      POSTGRES_USER: invoiceshelfuser
+      POSTGRES_PASSWORD: invoiceshelfpass
+    restart: 'on-failure:5'
+  invoiceshelf:
+    image: 'zurielbax/ike:latest'
+    container_name: InvoiceShelf
+    volumes:
+      - '/volume2/docker/ike/data:/data:rw'
+      - '/volume2/docker/ike/conf:/conf:rw'
+    environment:
+      PHP_TZ: America/New_York
+      TIMEZONE: America/New_York
+      PUID: 1000
+      PGID: 1000
+      APP_NAME: Mariushosting
+      APP_KEY: 'base64:PqkYgeKqq3hdHZTvL6ENXdhgyyoCDZYj9wofOcw0l4o='
+      APP_ENV: local
+      APP_DEBUG: true
+      APP_URL: 'https://demoinv.2.zurielbm.com'
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: invoiceshelf
+      DB_USERNAME: invoiceshelfuser
+      DB_PASSWORD: invoiceshelfpass
+      DB_PASSWORD_FILE: rootpass
+      CACHE_STORE: file
+      SESSION_DRIVER: file
+      SESSION_LIFETIME: 240
+      SESSION_ENCRYPT: false
+      SESSION_PATH: /
+      SESSION_DOMAIN: demoinv.2.zurielbm.com
+      SANCTUM_STATEFUL_DOMAINS: inv.2.zurielbm.com
+      STARTUP_DELAY: 5
+      TRUSTED_PROXIES: '*'
+    restart: 'on-failure:5'
+    depends_on:
+      - db
